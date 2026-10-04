@@ -1,7 +1,6 @@
-import http from 'k6/http';
-import { check, sleep } from 'k6';
-import { BASE_URL } from '../lib/config.js';
-import { checkStatus200 } from '../lib/checks.js';
+import { sleep } from 'k6';
+import { getBookings, createBooking, sampleBooking } from '../lib/booking.js';
+import { checkStatus200, checkStatus200or201 } from '../lib/checks.js';
 
 export const options = {
   stages: [
@@ -16,7 +15,11 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get(`${BASE_URL}/booking`);
-  checkStatus200(res);
+  const list = getBookings();
+  checkStatus200(list);
+
+  const created = createBooking(sampleBooking());
+  checkStatus200or201(created);
+
   sleep(1);
 }
