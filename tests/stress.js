@@ -1,5 +1,7 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import { BASE_URL } from '../lib/config.js';
+import { checkStatus200 } from '../lib/checks.js';
 
 export const options = {
   stages: [
@@ -15,9 +17,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('https://restful-booker.herokuapp.com/booking');
-  check(res, {
-    'status is 200': (r) => r.status === 200,
-  });
+  const res = http.get(`${BASE_URL}/booking`);
+  checkStatus200(res);
   sleep(1);
 }
