@@ -34,3 +34,7 @@ GitHub Actions runs the smoke test on every push and pull request to `main`, con
 ## Tools
 
 k6, JavaScript, GitHub Actions, Git and GitHub
+
+## Nightly Workflow 
+
+A nightly workflow runs smoke and load checks automatically. Stress, spike, and soak are run manually (via workflow_dispatch) rather than scheduled, since they apply heavy load to a shared public demo server and don't need to run unattended every night.

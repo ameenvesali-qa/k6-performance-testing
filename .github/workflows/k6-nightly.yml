@@ -1,0 +1,55 @@
+name: k6 Nightly Check
+
+on:
+  schedule:
+    - cron: '0 4 * * *'   # every day at 04:00 UTC
+  workflow_dispatch:        # lets you trigger any job manually from the Actions tab
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run smoke test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/smoke.js
+
+  load:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run load test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/load.js
+
+  stress:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run stress test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/stress.js
+
+  spike:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run spike test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/spike.js
+
+  soak:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run soak test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: tests/soak.js
